@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index East</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .boot-sequence {
+            font-size: 12px;
+            color: #00ff00;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .boot-line {
+            opacity: 0;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: normal;
+            letter-spacing: 2px;
+            margin-bottom: 60px;
+            color: #00ff00;
+            min-height: 60px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 12px;
+            height: 48px;
+            background-color: #00ff00;
+            margin-left: 4px;
+            animation: blink 1s infinite;
+            vertical-align: bottom;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .description {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 80px;
+            opacity: 0.9;
+            min-height: 100px;
+        }
+
+        .contact-section {
+            border-top: 4px solid #001a00;
+            padding-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            height: 4px;
+            width: 0;
+            background-color: #00ff00;
+            box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+            z-index: 10;
+        }
+
+        .contact-section.loading::before {
+            animation: loadBar 3s ease-in-out infinite;
+        }
+
+        @keyframes loadBar {
+            0% {
+                width: 0;
+                box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+            }
+            50% {
+                box-shadow: 0 0 30px #00ff00, 0 0 60px #00ff00;
+            }
+            100% {
+                width: 100%;
+                box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
+            }
+        }
+
+        .contact-label {
+            font-size: 14px;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-method {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .contact-method a {
+            color: #00ff00;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .contact-method a:hover {
+            opacity: 0.7;
+        }
+
+        .encrypted {
+            font-size: 12px;
+            color: #666;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 36px;
+            }
+
+            .cursor {
+                height: 36px;
+                width: 10px;
+            }
+
+            .description {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="boot-sequence">
+            <div class="boot-line">[OK] Initializing secure channel...</div>
+            <div class="boot-line">[OK] Establishing encrypted connection...</div>
+            <div class="boot-line">[OK] Loading entity profile...</div>
+        </div>
+
+        <h1 class="logo"><span id="typed-text"></span><span class="cursor" id="cursor" style="display:none;"></span></h1>
+
+        <div class="description" id="description"></div>
+
+        <div class="contact-section">
+            <div class="contact-label" id="contact-label"></div>
+            <div class="contact-method" id="contact-method"></div>
+            <div class="encrypted" id="encrypted"></div>
+        </div>
+    </div>
+
+    <script>
+        // Content to type out
+        const logoText = "INDEX EAST";
+        const descriptionText = "Bespoke advisory for capital, culture, and complexity in frontier markets and emerging economies. We facilitate cross-border capital deployment and strategic partnerships where conventional advisory doesn't reach.";
+        const labelText = "// Engage";
+        const emailHTML = '<a href="mailto:signal@protonmail.com">signal@protonmail.com</a>';
+        const encryptedText = "[Secure channels preferred. PGP on request.]";
+
+        // Elements
+        const bootLines = document.querySelectorAll('.boot-line');
+        const body = document.body;
+        const typedText = document.getElementById('typed-text');
+        const cursor = document.getElementById('cursor');
+        const description = document.getElementById('description');
+        const contactLabel = document.getElementById('contact-label');
+        const contactMethod = document.getElementById('contact-method');
+        const encrypted = document.getElementById('encrypted');
+        const contactSection = document.querySelector('.contact-section');
+
+        let charIndex = 0;
+
+        function showBootSequence() {
+            body.classList.add('loaded');
+
+            bootLines.forEach((line, index) => {
+                setTimeout(() => {
+                    line.style.opacity = '1';
+                }, index * 300);
+            });
+
+            setTimeout(() => {
+                typeText();
+            }, bootLines.length * 300 + 500);
+        }
+
+        function typeText() {
+            if (charIndex < logoText.length) {
+                typedText.textContent += logoText[charIndex];
+                charIndex++;
+                setTimeout(typeText, 100);
+            } else {
+                cursor.style.display = 'inline-block';
+                setTimeout(() => {
+                    typeDescription();
+                }, 500);
+            }
+        }
+
+        function typeDescription() {
+            let descCharIndex = 0;
+
+            function typeChar() {
+                if (descCharIndex < descriptionText.length) {
+                    description.textContent += descriptionText[descCharIndex];
+                    descCharIndex++;
+                    setTimeout(typeChar, 15); // Fast typing
+                } else {
+                    setTimeout(() => {
+                        typeContactLabel();
+                    }, 400);
+                }
+            }
+
+            typeChar();
+        }
+
+        function typeContactLabel() {
+            let labelCharIndex = 0;
+
+            function typeChar() {
+                if (labelCharIndex < labelText.length) {
+                    contactLabel.textContent += labelText[labelCharIndex];
+                    labelCharIndex++;
+                    setTimeout(typeChar, 20);
+                } else {
+                    setTimeout(() => {
+                        typeEmail();
+                    }, 200);
+                }
+            }
+
+            typeChar();
+        }
+
+        function typeEmail() {
+            // For email, just show it directly since it has HTML
+            contactMethod.innerHTML = emailHTML;
+
+            setTimeout(() => {
+                typeEncrypted();
+            }, 200);
+        }
+
+        function typeEncrypted() {
+            let encCharIndex = 0;
+
+            function typeChar() {
+                if (encCharIndex < encryptedText.length) {
+                    encrypted.textContent += encryptedText[encCharIndex];
+                    encCharIndex++;
+                    setTimeout(typeChar, 15);
+                } else {
+                    setTimeout(() => {
+                        contactSection.classList.add('loading');
+                    }, 300);
+                }
+            }
+
+            typeChar();
+        }
+
+        // Start the sequence
+        showBootSequence();
+    </script>
+</body>
+</html>
