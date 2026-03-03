@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index East</title>
+    <meta name="description" content="Index East — advisory and intelligence for capital, culture, and complexity in frontier markets.">
+    <title>Index East | Frontier Market Advisory & Intelligence</title>
     <style>
+        /* === Reset === */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* === Base === */
         body {
             font-family: 'Courier New', monospace;
             background-color: #000000;
             color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            position: relative;
-            overflow: hidden;
             opacity: 0;
             transition: opacity 0.5s;
         }
@@ -33,8 +33,76 @@
         .container {
             max-width: 700px;
             width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            color: #00ff00;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        a:hover {
+            opacity: 0.7;
+        }
+
+        /* === Nav === */
+        #main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            border-bottom: 1px solid #001a00;
+            background-color: #000000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s;
+        }
+
+        #main-nav.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-inner {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-wordmark {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #00ff00;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #00ff00;
+        }
+
+        /* === Hero === */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
             position: relative;
-            z-index: 1;
+            overflow: hidden;
         }
 
         .boot-sequence {
@@ -46,6 +114,7 @@
 
         .boot-line {
             opacity: 0;
+            transition: opacity 0.2s;
         }
 
         .logo {
@@ -67,11 +136,6 @@
             vertical-align: bottom;
         }
 
-        @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
-        }
-
         .description {
             font-size: 18px;
             line-height: 1.7;
@@ -80,14 +144,14 @@
             min-height: 100px;
         }
 
-        .contact-section {
+        .hero-contact {
             border-top: 4px solid #001a00;
             padding-top: 40px;
             position: relative;
             overflow: hidden;
         }
 
-        .contact-section::before {
+        .hero-contact::before {
             content: '';
             position: absolute;
             top: -4px;
@@ -99,8 +163,217 @@
             z-index: 10;
         }
 
-        .contact-section.loading::before {
+        .hero-contact.loading::before {
             animation: loadBar 3s ease-in-out infinite;
+        }
+
+        .contact-label {
+            font-size: 14px;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-method {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .encrypted {
+            font-size: 12px;
+            color: #666;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+        /* === Section Dividers === */
+        .section-divider {
+            border: none;
+            border-top: 1px solid #001a00;
+            position: relative;
+            margin: 0;
+            box-shadow: 0 -1px 8px rgba(0, 255, 0, 0.08);
+        }
+
+        /* === Below-fold sections === */
+        .below-fold {
+            padding: 80px 20px;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .below-fold.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header {
+            font-size: 14px;
+            color: #00ff00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .section-intro {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #ffffff;
+            margin-bottom: 60px;
+            opacity: 0.9;
+        }
+
+        /* === Tools === */
+        .tool-card {
+            margin-bottom: 56px;
+        }
+
+        .tool-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+
+        .tool-name {
+            font-size: 22px;
+            font-weight: normal;
+            color: #00ff00;
+            letter-spacing: 2px;
+        }
+
+        .tool-status-live {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #00ff00;
+            animation: pulseBadge 2.5s ease-in-out infinite;
+        }
+
+        .tool-status-soon {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #444444;
+        }
+
+        .tool-description {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #ffffff;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .tool-card.coming-soon .tool-description {
+            opacity: 0.5;
+        }
+
+        .tool-cta {
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* === Advisory === */
+        .advisory-item {
+            margin-bottom: 48px;
+        }
+
+        .advisory-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .advisory-name {
+            font-size: 14px;
+            font-weight: normal;
+            color: #00ff00;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .advisory-description {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        /* === Contact === */
+        .contact-static-label {
+            font-size: 14px;
+            color: #00ff00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .contact-static-email {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .contact-static-pgp {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+
+        .city-line {
+            font-size: 12px;
+            color: #444;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* === Footer === */
+        footer {
+            border-top: 1px solid #001a00;
+            padding: 20px;
+        }
+
+        .footer-inner {
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copy {
+            font-size: 11px;
+            color: #444;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #444;
+        }
+
+        .footer-links a:hover {
+            color: #00ff00;
+            opacity: 1;
+        }
+
+        /* === Animations === */
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
         }
 
         @keyframes loadBar {
@@ -117,36 +390,12 @@
             }
         }
 
-        .contact-label {
-            font-size: 14px;
-            color: #00ff00;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        @keyframes pulseBadge {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
 
-        .contact-method {
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-
-        .contact-method a {
-            color: #00ff00;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .contact-method a:hover {
-            opacity: 0.7;
-        }
-
-        .encrypted {
-            font-size: 12px;
-            color: #666;
-            margin-top: 30px;
-            font-style: italic;
-        }
-
+        /* === Responsive === */
         @media (max-width: 600px) {
             .logo {
                 font-size: 36px;
@@ -160,34 +409,163 @@
             .description {
                 font-size: 16px;
             }
+
+            .nav-links {
+                gap: 16px;
+            }
+
+            .tool-name {
+                font-size: 18px;
+            }
+
+            .section-intro {
+                font-size: 16px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="boot-sequence">
-            <div class="boot-line">[OK] Initializing secure channel...</div>
-            <div class="boot-line">[OK] Establishing encrypted connection...</div>
-            <div class="boot-line">[OK] Loading entity profile...</div>
+
+    <!-- Nav (hidden during boot, fades in after) -->
+    <nav id="main-nav">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-wordmark">Index East</a>
+            <div class="nav-links">
+                <a href="#tools">Tools</a>
+                <a href="#advisory">Advisory</a>
+                <a href="#contact">Contact</a>
+            </div>
         </div>
+    </nav>
 
-        <h1 class="logo"><span id="typed-text"></span><span class="cursor" id="cursor" style="display:none;"></span></h1>
+    <!-- Hero -->
+    <section id="hero">
+        <div class="container">
+            <div class="boot-sequence">
+                <div class="boot-line">[OK] Initializing secure channel...</div>
+                <div class="boot-line">[OK] Establishing encrypted connection...</div>
+                <div class="boot-line">[OK] Loading entity profile...</div>
+            </div>
 
-        <div class="description" id="description"></div>
+            <h1 class="logo"><span id="typed-text"></span><span class="cursor" id="cursor" style="display:none;"></span></h1>
 
-        <div class="contact-section">
-            <div class="contact-label" id="contact-label"></div>
-            <div class="contact-method" id="contact-method"></div>
-            <div class="encrypted" id="encrypted"></div>
+            <div class="description" id="description"></div>
+
+            <div class="hero-contact" id="hero-contact">
+                <div class="contact-label" id="contact-label"></div>
+                <div class="contact-method" id="contact-method"></div>
+                <div class="encrypted" id="encrypted"></div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Tools -->
+    <section id="tools" class="below-fold">
+        <div class="container">
+            <div class="section-header">// Tools</div>
+            <p class="section-intro">Purpose-built instruments for frontier market operators.</p>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <h2 class="tool-name">VIGIL</h2>
+                    <span class="tool-status-live">[Live]</span>
+                </div>
+                <p class="tool-description">Global intelligence dashboard. Conflicts, political risk, trade disruptions, seismic events, market signals. Real-time.</p>
+                <a href="/vigil/" class="tool-cta">Launch Vigil &rarr;</a>
+            </div>
+
+            <div class="tool-card coming-soon">
+                <div class="tool-header">
+                    <h2 class="tool-name">PASSAGE</h2>
+                    <span class="tool-status-soon">[Coming Soon]</span>
+                </div>
+                <p class="tool-description">Cross-border deal corridor mapping. Regulatory pathways, capital flow routes, partner networks. Built for the deal that doesn't have a playbook.</p>
+            </div>
+
+            <div class="tool-card coming-soon">
+                <div class="tool-header">
+                    <h2 class="tool-name">DOSSIER</h2>
+                    <span class="tool-status-soon">[Coming Soon]</span>
+                </div>
+                <p class="tool-description">Counterparty and market intelligence briefs. Deep-context profiles on entities, jurisdictions, and key actors, compiled on demand.</p>
+            </div>
+
+            <div class="tool-card coming-soon">
+                <div class="tool-header">
+                    <h2 class="tool-name">SIGNAL</h2>
+                    <span class="tool-status-soon">[Coming Soon]</span>
+                </div>
+                <p class="tool-description">Monitoring and alerts for your positions and interests. Custom tripwires across political, regulatory, and security vectors. Quiet. Persistent.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Advisory -->
+    <section id="advisory" class="below-fold">
+        <div class="container">
+            <div class="section-header">// Advisory</div>
+            <p class="section-intro">We don't advise from a distance.</p>
+
+            <div class="advisory-item">
+                <h3 class="advisory-name">Market Entry</h3>
+                <p class="advisory-description">Structuring your first move into a frontier jurisdiction. Regulatory mapping, local partner identification, political risk assessment. We've been in the places you're looking at now.</p>
+            </div>
+
+            <div class="advisory-item">
+                <h3 class="advisory-name">Capital Deployment</h3>
+                <p class="advisory-description">Facilitating cross-border investment where standard channels fall short. LP-to-opportunity matching, deal structuring, and hands-on execution in markets that reward relationships over paperwork.</p>
+            </div>
+
+            <div class="advisory-item">
+                <h3 class="advisory-name">Strategic Partnerships</h3>
+                <p class="advisory-description">Connecting principals across borders. Government-to-private, private-to-private, institutional-to-local. We make introductions that close.</p>
+            </div>
+
+            <div class="advisory-item">
+                <h3 class="advisory-name">Crisis & Continuity</h3>
+                <p class="advisory-description">When the situation changes overnight. Rapid assessment, asset protection advisory, evacuation logistics coordination, and operational continuity planning for teams on the ground.</p>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- Contact -->
+    <section id="contact" class="below-fold">
+        <div class="container">
+            <div class="contact-static-label">// Contact</div>
+            <div class="contact-static-email"><a href="mailto:indexeast@proton.me">indexeast@proton.me</a></div>
+            <div class="contact-static-pgp">[Secure channels preferred. PGP on request.]</div>
+            <div class="city-line">Nairobi &nbsp;&#183;&nbsp; Accra &nbsp;&#183;&nbsp; Cape Town &nbsp;&#183;&nbsp; Washington &nbsp;&#183;&nbsp; London</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <span class="footer-copy">&copy; 2026 Index East</span>
+            <div class="footer-links">
+                <a href="/vigil/">Vigil</a>
+                <a href="#hero">Top &uarr;</a>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        // Content to type out
+        // Content
         const logoText = "INDEX EAST";
-        const descriptionText = "Bespoke advisory for capital, culture, and complexity in frontier markets and emerging economies. We facilitate cross-border capital deployment and strategic partnerships where conventional advisory doesn't reach.";
+        const descriptionText = "Advisory and intelligence for capital, culture, and complexity in frontier markets. We build tools for the operators who need to see what's coming, and we deploy alongside the principals who need to move where others won't.";
         const labelText = "// Engage";
-        const emailHTML = '<a href="mailto:indexeast@proton.me">indexeast@proton.me</a>';
         const encryptedText = "[Secure channels preferred. PGP on request.]";
 
         // Elements
@@ -199,7 +577,8 @@
         const contactLabel = document.getElementById('contact-label');
         const contactMethod = document.getElementById('contact-method');
         const encrypted = document.getElementById('encrypted');
-        const contactSection = document.querySelector('.contact-section');
+        const heroContact = document.getElementById('hero-contact');
+        const nav = document.getElementById('main-nav');
 
         let charIndex = 0;
 
@@ -237,7 +616,7 @@
                 if (descCharIndex < descriptionText.length) {
                     description.textContent += descriptionText[descCharIndex];
                     descCharIndex++;
-                    setTimeout(typeChar, 15); // Fast typing
+                    setTimeout(typeChar, 12);
                 } else {
                     setTimeout(() => {
                         typeContactLabel();
@@ -258,7 +637,7 @@
                     setTimeout(typeChar, 20);
                 } else {
                     setTimeout(() => {
-                        typeEmail();
+                        showEmail();
                     }, 200);
                 }
             }
@@ -266,9 +645,11 @@
             typeChar();
         }
 
-        function typeEmail() {
-            // For email, just show it directly since it has HTML
-            contactMethod.innerHTML = emailHTML;
+        function showEmail() {
+            const link = document.createElement('a');
+            link.href = 'mailto:indexeast@proton.me';
+            link.textContent = 'indexeast@proton.me';
+            contactMethod.appendChild(link);
 
             setTimeout(() => {
                 typeEncrypted();
@@ -285,7 +666,9 @@
                     setTimeout(typeChar, 15);
                 } else {
                     setTimeout(() => {
-                        contactSection.classList.add('loading');
+                        heroContact.classList.add('loading');
+                        nav.classList.add('visible');
+                        initScrollObserver();
                     }, 300);
                 }
             }
@@ -293,7 +676,22 @@
             typeChar();
         }
 
-        // Start the sequence
+        // Scroll fade-in for below-fold sections
+        function initScrollObserver() {
+            const sections = document.querySelectorAll('.below-fold');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.08 });
+
+            sections.forEach(section => observer.observe(section));
+        }
+
         showBootSequence();
     </script>
 </body>
